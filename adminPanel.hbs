@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        :root {
+            --primary-color: #2a5298;
+            --secondary-color: #1e3c72;
+            --background-color: #f4f7fd;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 1rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Admin Panel</h1>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <!-- Add Menu Form -->
+            <section>
+                <h2>Add Menu Item</h2>
+                <form action="/admin/addMenu" method="POST">
+                    <label for="day">Day</label>
+                    <select id="day" name="day" required>
+                        <option value="">Select a day</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+
+                    <label for="mealType">Meal</label>
+                    <select id="mealType" name="mealType" required>
+                        <option value="">Select a meal</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                    </select>
+
+                    <label for="mealDetails">Meal Details</label>
+                    <input type="text" id="mealDetails" name="mealDetails" placeholder="Enter meal details" required>
+
+                    <button type="submit">Add Menu</button>
+                </form>
+            </section>
+
+            <!-- Add Timing Form -->
+            <section>
+                <h2>Add Meal Timing & Cost</h2>
+                <form action="/admin/addTimings" method="POST">
+                    <label for="timingMeal">Meal Type</label>
+                    <select id="timingMeal" name="meal" required>
+                        <option value="">Select a meal</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                    </select>
+
+                    <label for="cost">Cost</label>
+                    <input type="number" id="cost" name="cost" placeholder="Enter cost" required>
+
+                    <label for="timings">Time</label>
+                    <input type="text" id="timings" name="timings" placeholder="Enter time (e.g., 8:00 AM - 9:00 AM)"
+                        required>
+
+                    <button type="submit">Add Timing</button>
+                </form>
+            </section>
+
+            <section>
+                <h2>Update Meal</h2>
+                <form action="/admin/updateMenu" method="POST">
+                    <label for="day">Day</label>
+                    <select id="day" name="day" required>
+                        <option value="">Select a day</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+
+                    <label for="mealType">Meal Type</label>
+                    <select id="mealType" name="mealType" required>
+                        <option value="">Select a meal type</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                    </select>
+
+                    <label for="mealDetails">Meal Details</label>
+                    <input type="text" id="mealDetails" name="mealDetails" placeholder="Enter meal details" required>
+                    <button type="submit">Update Meal</button>
+                </form>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

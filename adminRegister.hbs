@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Register</title>
+    <!-- Add FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-box">
+            <!-- Add logo -->
+             <img src="https://klectie.com/assets/img/KLE-Tech-Logo.png" alt="KLE Tech Logo" class="logo">
+            
+            <h1>ADMIN REGISTRATION</h1>
+            
+            {{#if errorMessage}}
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                {{errorMessage}}
+            </div>
+            {{/if}}
+            
+            <form action="/admin/register" method="post">
+                <div class="input-group">
+                    <input type="text" placeholder="Username" id="username" name="username" required>
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Email" id="email" name="email" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" id="password" name="password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="input-group">
+                    <input type="text" placeholder="Secret Code" id="secretcode" name="secretCode" required>
+                    <i class="fas fa-key"></i>
+                </div>
+                <button type="submit">
+                    Register
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            
+            <a href="/admin/login" class="login-link">Already registered? Login here</a>
+        </div>
+    </div>
+</body>
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f4b41a 0%, #f4d03f 100%);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Animated background elements */
+    body::before {
+        content: '';
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.1) 50%, transparent 55%);
+        animation: shine 4s infinite;
+    }
+
+    @keyframes shine {
+        0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+        100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
+    }
+
+    .register-container {
+        width: 100%;
+        max-width: 450px;
+        padding: 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .register-box {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15),
+                    0 5px 15px rgba(0, 0, 0, 0.07);
+        backdrop-filter: blur(10px);
+        transform: translateY(0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .register-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2),
+                    0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+        display: block;
+        margin: 0 auto 20px;
+        max-width: 200px;
+        transform: scale(1);
+        transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+        transform: scale(1.05);
+    }
+
+    h1 {
+        color: #333;
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        position: relative;
+    }
+
+    h1::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 3px;
+        background: #c41230;
+        margin: 10px auto 0;
+        border-radius: 2px;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .input-group input {
+        width: 90%;
+        padding: 12px 40px 12px 15px;
+        border: 2px solid #e1e1e1;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .input-group input:focus {
+        border-color: #c41230;
+        box-shadow: 0 0 0 3px rgba(196, 18, 48, 0.1);
+        outline: none;
+    }
+
+    .input-group i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #c41230;
+        transition: all 0.3s ease;
+    }
+
+    .input-group input:focus + i {
+        color: #c41230;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #c41230 0%, #dc1a36 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    button::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        transition: 0.5s;
+    }
+
+    button:hover {
+        background: linear-gradient(135deg, #b31029 0%, #c41230 100%);
+        transform: translateY(-2px);
+    }
+
+    button:hover::after {
+        left: 100%;
+    }
+
+    .login-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #c41230;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+    }
+
+    .login-link:hover {
+        color: #b31029;
+        text-decoration: underline;
+    }
+
+    .error-message {
+        background: rgba(196, 18, 48, 0.1);
+        color: #c41230;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+        border: 1px solid rgba(196, 18, 48, 0.2);
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+</style>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Selection</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-bottom: 20px;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            border: none;
+        }
+
+        th:first-child { border-radius: 10px 0 0 10px; }
+        th:last-child { border-radius: 0 10px 10px 0; }
+
+        td {
+            background: white;
+            padding: 15px;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        tr:not(tfoot tr) td:first-child {
+            border-radius: 10px 0 0 10px;
+            font-weight: 600;
+        }
+
+        tr:not(tfoot tr) td:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover td {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        tfoot tr {
+            background: none;
+        }
+
+        tfoot td {
+            padding: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+        }
+
+        tfoot td:first-child {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        tfoot td#totalBreakfast {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        tfoot td#totalLunch {
+            background: linear-gradient(135deg, #f46b45 0%, #eea849 100%);
+        }
+
+        tfoot td#totalDinner {
+            background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+        }
+
+        /* Add animation for loading */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        tbody tr {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        /* ... and so on */
+    </style>
+</head>
+
+<body>
+    <h1>Number of Meals Opted by Students</h1>
+    <div class="container">
+        <table id="mealTable">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Day</th>
+                    <th style="width: 30%;">Breakfast Count</th>
+                    <th style="width: 30%;">Lunch Count</th>
+                    <th style="width: 30%;">Dinner Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each totalMeals}}
+                <tr>
+                    <td>{{this.day}}</td>
+                    <td>{{this.breakfast_count}}</td>
+                    <td>{{this.lunch_count}}</td>
+                    <td>{{this.dinner_count}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+            <tfoot>
+                <tr id="totalRow">
+                    <td><strong>Total</strong></td>
+                    <td id="totalBreakfast">0</td>
+                    <td id="totalLunch">0</td>
+                    <td id="totalDinner">0</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        function calculateTotalMeals() {
+            let totalBreakfast = 0;
+            let totalLunch = 0;
+            let totalDinner = 0;
+
+            const rows = document.querySelectorAll("#mealTable tbody tr");
+            rows.forEach(row => {
+                const breakfastCount = parseInt(row.cells[1].innerText) || 0;
+                const lunchCount = parseInt(row.cells[2].innerText) || 0;
+                const dinnerCount = parseInt(row.cells[3].innerText) || 0;
+
+                totalBreakfast += breakfastCount;
+                totalLunch += lunchCount;
+                totalDinner += dinnerCount;
+            });
+
+            // Add animation to total updates
+            const animateValue = (element, start, end, duration) => {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    element.innerText = Math.floor(progress * (end - start) + start);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            };
+
+            // Animate the totals
+            animateValue(document.getElementById("totalBreakfast"), 0, totalBreakfast, 1000);
+            animateValue(document.getElementById("totalLunch"), 0, totalLunch, 1000);
+            animateValue(document.getElementById("totalDinner"), 0, totalDinner, 1000);
+        }
+
+        window.onload = calculateTotalMeals;
+    </script>
+</body>
+
+</html>

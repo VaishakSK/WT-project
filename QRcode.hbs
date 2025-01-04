@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        #dataDisplay {
+            padding: 25px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .meal-entry {
+            margin: 15px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            transition: transform 0.2s ease;
+        }
+
+        .meal-entry:hover {
+            transform: translateX(5px);
+        }
+
+        .meal-entry h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+
+        .meal-entry h4 {
+            color: #34495e;
+            margin: 10px 0;
+        }
+
+        .meal-entry ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .meal-entry li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .meal-entry li:last-child {
+            border-bottom: none;
+        }
+
+        #imgbox {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+            text-align: center;
+        }
+
+        #qrImage {
+            width: 250px;
+            height: 250px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        #qrImage:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+        }
+
+        .qr-label {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2980b9;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .qr-data {
+            margin-top: 10px;
+            padding: 12px;
+            background: rgba(41, 128, 185, 0.1);
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #2980b9;
+            max-width: 90%;
+            word-wrap: break-word;
+            transition: all 0.3s ease;
+        }
+
+        .qr-data:hover {
+            background: rgba(41, 128, 185, 0.15);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            #imgbox {
+                position: static;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+    
+    <div class="container">
+        <div id="dataDisplay"></div>
+        <div id="imgbox">
+            <img src="" id="qrImage" alt="QR Code">
+            <div class="qr-label">Scan QR Code</div>
+            <div class="qr-data"></div>
+        </div>
+    </div>
+
+    <script>
+        function generateQR() {
+            const qrImage = document.getElementById('qrImage');
+            const dataDisplay = document.getElementById('dataDisplay');
+
+            const data = {{{buyers}}};
+
+            if (!data || data.length === 0) {
+                dataDisplay.innerHTML = '<div class="meal-entry" style="text-align: center; color: #e74c3c;">No buyer data available</div>';
+                return;
+            }
+
+            let html = '<h2 style="color: #2c3e50; margin-bottom: 20px;">Buyer Data</h2>';
+            
+            data.forEach((buyer, index) => {
+                html += `<div class="meal-entry">
+                    <h3>Buyer ${index + 1}</h3>
+                    <p style="color: #7f8c8d;"><strong>Created:</strong> ${new Date(buyer.createdAt).toLocaleString()}</p>
+                    <h4>Meals:</h4>
+                    <ul>`;
+                
+                buyer.meals.forEach(meal => {
+                    const mealTypes = [];
+                    if (meal.breakfast) mealTypes.push('<span style="color: #e67e22;">Breakfast</span>');
+                    if (meal.lunch) mealTypes.push('<span style="color: #27ae60;">Lunch</span>');
+                    if (meal.dinner) mealTypes.push('<span style="color: #8e44ad;">Dinner</span>');
+                    
+                    html += `<li><strong>${meal.day}:</strong> ${mealTypes.join(' • ')}</li>`;
+                });
+                
+                html += `</ul></div>`;
+            });
+            
+            dataDisplay.innerHTML = html;
+
+            const qrData = encodeURIComponent(JSON.stringify(data));
+            qrImage.src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + qrData;
+            
+            const qrDataElement = document.querySelector('.qr-data');
+            qrDataElement.textContent = `Data: ${JSON.stringify(data).substring(0, 50)}...`;
+        }
+
+        window.onload = generateQR;
+    </script>
+</body>
+</html>

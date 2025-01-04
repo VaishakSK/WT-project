@@ -1,0 +1,350 @@
+<div class="wallet-amount-corner">Wallet:₹2500</div>
+
+<div class="container">
+    <!-- Details Section -->
+    <div class="section details-section">
+        <div class="wallet-card">
+            <div class="wallet-details">
+                <div class="user-avatar">
+                    <span>E</span>
+                </div>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="label">Username</span>
+                        <span class="value">Esha</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">User ID</span>
+                        <span class="value">S1142</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Hostel</span>
+                        <span class="value">Shalmala</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Balance</span>
+                        <span class="value">₹2500</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="section form-section">
+        <div class="wallet-card">
+            <div class="wallet-header">
+                <h1>💰 Add Money to Wallet</h1>
+            </div>
+            
+            <form action="/add" method="POST" class="wallet-form">
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="Enter Username" required>
+                    <span class="input-border"></span>
+                </div>
+
+                <div class="input-group">
+                    <input type="number" name="amount" placeholder="Enter Amount" min="1" step="any" required>
+                    <span class="input-border"></span>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" name="password" placeholder="Enter Password" required>
+                    <span class="input-border"></span>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <span>Add Money</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.wallet-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+.wallet-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(10px);
+}
+
+.wallet-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.wallet-header h1 {
+    color: #4a5568;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.wallet-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: #667eea;
+    transition: width 0.3s ease;
+}
+
+.input-group input:focus ~ .input-border {
+    width: 100%;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+    .wallet-card {
+        padding: 1.5rem;
+    }
+
+    .wallet-header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Animation for success */
+@keyframes success-animation {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.success-message {
+    animation: success-animation 0.3s ease forwards;
+    color: #48bb78;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* New styles for wallet details */
+.wallet-amount-corner {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4a5568;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.wallet-details {
+    background: linear-gradient(135deg, #f6f8ff 0%, #f1f1f1 100%);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.details-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-item .label {
+    font-size: 0.8rem;
+    color: #718096;
+    margin-bottom: 0.2rem;
+}
+
+.detail-item .value {
+    font-size: 1rem;
+    color: #2d3748;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .wallet-details {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Add some hover effects */
+.wallet-details:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* New container and section styles */
+.container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Update wallet-card styles */
+.wallet-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .wallet-card {
+        max-width: 400px;
+    }
+}
+</style>
+
+<script>
+document.querySelector('.wallet-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const username = formData.get('username');
+    const amount = formData.get('amount');
+    const password = formData.get('password');
+
+    try {
+        const response = await fetch('/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, amount, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            const successMsg = document.createElement('div');
+            successMsg.className = 'success-message';
+            successMsg.textContent = `Successfully added ${amount} to wallet! New balance: ${data.wallet}`;
+            e.target.appendChild(successMsg);
+            
+            // Clear form
+            e.target.reset();
+            
+            // Remove success message after 3 seconds
+            setTimeout(() => {
+                successMsg.remove();
+            }, 3000);
+        } else {
+            alert(data.message || 'Error adding amount');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error processing request');
+    }
+});
+</script>

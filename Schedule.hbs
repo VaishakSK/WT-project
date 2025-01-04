@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Schedule</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f7fd;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2a5298;
+            font-size: 2.5rem;
+            margin: 2rem 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        table {
+            width: 90%;
+            margin: 2rem auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        tr:hover td {
+            background-color: #f8f9ff;
+            transform: scale(1.01);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Add responsive design */
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 0.8rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Weekly Schedule</h1>
+
+    <!-- Weekly Schedule Table -->
+    <table id="schedule-table">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Dinner</th>
+            </tr>
+        </thead>
+        <tbody id="schedule-body">
+            {{#each menuItems}}
+            <tr>
+                <td>{{this.day}}</td>
+                <td>{{this.breakfast}}</td>
+                <td>{{this.lunch}}</td>
+                <td>{{this.dinner}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <h1>Mess Timings</h1>
+
+    <!-- Mess Timings Table -->
+    <table id="Mess Timings">
+        <thead>
+            <tr>
+                <th>Meal</th>
+                <th>Cost</th>
+                <th>Timings</th>
+            </tr>
+        </thead>
+        <tbody id="timings-body">
+            {{#each timings}}
+            <tr>
+                <td>{{this.meal}}</td>
+                <td>{{this.cost}}</td>
+                <td>{{this.time}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</body>
+
+</html>

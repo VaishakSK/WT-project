@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js" integrity="sha512-k/KAe4Yff9EUdYI5/IAHlwUswqeipP+Cp5qnrsUjTPCgl51La2/JhyyjNciztD7mWNKLSXci48m7cctATKfLlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in;
+        }
+
+        .selection-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        select {
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            min-width: 200px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+
+        select:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        select option {
+            background-color: #764ba2;
+            color: white;
+        }
+
+        #reader {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        #result {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        #result h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        #result a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        #result a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .selection-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header {
+                font-size: 2rem;
+            }
+
+            select {
+                width: 100%;
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1 class="header">Scan QR Code</h1>
+        <div class="selection-container">
+            <select id="daySelect" required>
+                <option value="">Select Day</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+            <select id="mealSelect" required>
+                <option value="">Select Meal</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+            </select>
+        </div>
+        <div id="reader" class="hidden"></div>
+        <div id="result"></div>
+    </main>
+    
+    <script>
+        const daySelect = document.getElementById('daySelect');
+        const mealSelect = document.getElementById('mealSelect');
+        const readerDiv = document.getElementById('reader');
+        let scanner;
+
+        // Check if both selections are made
+        function checkSelections() {
+            if (daySelect.value && mealSelect.value) {
+                readerDiv.classList.remove('hidden');
+                initializeScanner();
+            }
+        }
+
+        // Initialize the QR code scanner
+        function initializeScanner() {
+            scanner = new Html5QrcodeScanner('reader', { 
+                qrbox: {
+                    width: 250,
+                    height: 250,
+                },
+                fps: 5,
+                formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ],
+                rememberLastUsedCamera: true,
+                showTorchButtonIfSupported: true,
+                aspectRatio: 1.0
+            });
+
+            scanner.render(success, error);
+        }
+
+        // Add event listeners to dropdowns
+        daySelect.addEventListener('change', checkSelections);
+        mealSelect.addEventListener('change', checkSelections);
+
+        // Define success callback
+        function success(decodedText) {
+            const day = daySelect.value;
+            const meal = mealSelect.value;
+            
+            try {
+                // Parse the QR code data
+                const qrData = JSON.parse(decodedText);
+                // Get the meals array from the first object
+                const mealsArray = qrData[0].meals;
+                
+                // Find the selected day's data
+                const dayData = mealsArray.find(mealDay => mealDay.day === day);
+                
+                // Check if the selected meal is available for the selected day
+                const canAvailMeal = dayData && dayData[meal.toLowerCase()];
+                
+                const resultMessage = canAvailMeal 
+                    ? '<h2 style="color: #4CAF50;">Success! You can avail this meal.</h2>'
+                    : '<h2 style="color: #f44336;">Sorry! You cannot avail this meal.</h2>';
+
+                document.getElementById('result').innerHTML = `
+                    ${resultMessage}
+                    <p>Day: ${day}</p>
+                    <p>Meal: ${meal}</p>
+                `;
+            } catch (e) {
+                document.getElementById('result').innerHTML = `
+                    <h2 style="color: #f44336;">Invalid QR Code Format</h2>
+                    <p>The QR code does not contain valid meal data.</p>
+                `;
+            }
+            
+            scanner.clear();
+            document.getElementById('reader').remove();
+        }
+
+        // Define error callback
+        function error(errorMessage) {
+            console.warn(`QR Code scanning error: ${errorMessage}`);
+        }
+    </script>
+</body>
+</html>

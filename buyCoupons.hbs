@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Selection</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+            color: #2c3e50;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1200px;
+            gap: 30px;
+        }
+
+        form {
+            flex: 2;
+            margin-right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        form:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            margin: 20px 0 15px 0;
+            color: #3498db;
+            font-size: 1.8em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        th, td {
+            border: none;
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #f1f7fe;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.3);
+            cursor: pointer;
+            accent-color: #3498db;
+        }
+
+        .select-all-button, button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .select-all-button {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .select-all-button:hover, button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .separator {
+            margin: 30px 0;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .timings-container {
+            flex: 1;
+            max-width: 350px;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .timings-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .timings-container table {
+            margin-top: 15px;
+        }
+
+        .timings-container th {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        .day-checkbox {
+            margin-right: 12px;
+            transform: scale(1.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .timings-container {
+                max-width: 100%;
+                margin-top: 20px;
+            }
+            
+            form {
+                margin-right: 0;
+            }
+        }
+
+        .dashboard-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #2980b9 0%, #2573a7 100%);
+        }
+
+        .dashboard-button svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-button:hover svg {
+            transform: translateX(-4px);
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: -300px; /* Start off-screen */
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: right 0.5s ease;
+            z-index: 1000;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            right: 20px;
+        }
+
+        .toast svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .wallet-balance {
+            position: fixed;
+            top: 20px;
+            left: 180px; /* Positioned after the Dashboard button */
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .wallet-balance svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .wallet-balance {
+                top: 70px;
+                left: 20px;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for stored toast message on page load
+            const shouldShowToast = localStorage.getItem('showSubmitToast');
+            if (shouldShowToast) {
+                const toast = document.getElementById('submitToast');
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    localStorage.removeItem('showSubmitToast');
+                }, 6000);
+            }
+
+            const dayCheckboxes = document.querySelectorAll('.day-checkbox');
+            const form = document.querySelector('form');
+
+            // Update checkbox handling
+            dayCheckboxes.forEach(dayCheckbox => {
+                const day = dayCheckbox.dataset.day;
+                const mealCheckboxes = document.querySelectorAll(`.meal-checkbox-${day}`);
+
+                // Handle day checkbox change
+                dayCheckbox.addEventListener('change', () => {
+                    const isChecked = dayCheckbox.checked;
+                    mealCheckboxes.forEach(checkbox => {
+                        checkbox.checked = isChecked;
+                    });
+                    updateDayCheckboxState(dayCheckbox, mealCheckboxes);
+                });
+
+                // Handle meal checkboxes change
+                mealCheckboxes.forEach(mealCheckbox => {
+                    mealCheckbox.addEventListener('change', () => {
+                        updateDayCheckboxState(dayCheckbox, mealCheckboxes);
+                    });
+                });
+            });
+
+            // Helper function to update day checkbox state
+            function updateDayCheckboxState(dayCheckbox, mealCheckboxes) {
+                const checkedCount = Array.from(mealCheckboxes).filter(cb => cb.checked).length;
+                dayCheckbox.checked = checkedCount > 0;
+                dayCheckbox.indeterminate = checkedCount > 0 && checkedCount < mealCheckboxes.length;
+            }
+
+            // Handle select all button
+            const selectAllButton = document.querySelector('.select-all-button');
+            selectAllButton.addEventListener('click', () => {
+                const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+                const anyUnchecked = Array.from(allCheckboxes).some(cb => !cb.checked);
+                
+                allCheckboxes.forEach(checkbox => {
+                    checkbox.checked = anyUnchecked;
+                });
+                
+                dayCheckboxes.forEach(dayCheckbox => {
+                    dayCheckbox.indeterminate = false;
+                });
+            });
+
+            // Form submission validation
+            form.addEventListener('submit', (e) => {
+                const selectedMeals = document.querySelectorAll('input[type="checkbox"][name^="meals"]:checked');
+                if (selectedMeals.length === 0) {
+                    e.preventDefault();
+                    alert('Please select at least one meal before submitting.');
+                } else {
+                    // Store the toast state before form submission
+                    localStorage.setItem('showSubmitToast', 'true');
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="wallet-balance">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+        Balance: ₹{{walletBalance}}
+    </div>
+    <div class="toast" id="submitToast">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        Submitting your meal selection...
+    </div>
+    <a href="/dashboard" class="dashboard-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Dashboard
+    </a>
+    <h1>Select Your Meals for the Week</h1>
+    <div class="container">
+        <form action="/buyCoupons-admin" method="POST">
+            {{#each menuItems}}
+            <h2>
+                <label>
+                    <input type="checkbox" class="day-checkbox" data-day="{{this.day}}"> {{this.day}}
+                </label>
+            </h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Select</th>
+                        <th style="width: 20%;">Meal Type</th>
+                        <th style="width: 50%;">Meal Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" name="meals[{{this.day}}][]" value="breakfast" class="meal-checkbox-{{this.day}}"></td>
+                        <td>Breakfast</td>
+                        <td>{{this.breakfast}}</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="meals[{{this.day}}][]" value="lunch" class="meal-checkbox-{{this.day}}"></td>
+                        <td>Lunch</td>
+                        <td>{{this.lunch}}</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="meals[{{this.day}}][]" value="dinner" class="meal-checkbox-{{this.day}}"></td>
+                        <td>Dinner</td>
+                        <td>{{this.dinner}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="separator"></div>
+            {{/each}}
+            <button type="button" class="select-all-button">Select All Meals</button>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="timings-container">
+            <h2>Timings & Costs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Meal</th>
+                        <th>Cost</th>
+                        <th>Timings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each Timings}}
+                    <tr>
+                        <td>{{this.meal}}</td>
+                        <td>{{this.cost}}</td>
+                        <td>{{this.time}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
